@@ -56,3 +56,12 @@ def delete_device(name: str):
     raise HTTPException(status_code=404, detail="No device called " + name)
 
 
+@app.post("/devices", status_code=201)
+def create_device(device: Device):
+    for existing_device in readings:
+        if existing_device["name"] == device.name:
+            raise HTTPException(
+                status_code=409, 
+                detail=f"A device called {device.name} already exists"
+            )
+        
